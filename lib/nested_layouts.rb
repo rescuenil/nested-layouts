@@ -10,7 +10,7 @@ module ActionView #:nodoc:
       def inside_layout(layout, &block)
         binding = block.binding if BINDING_REQUIRED
         @template.instance_variable_set('@content_for_layout', capture(&block))
-        concat(@template.render(:file => @template.view_paths.find_template(layout, :html), :user_full_path => true), binding)
+        concat(@template.render(:file => @template.view_paths.find_template("layouts/#{layout}", :html), :user_full_path => true), binding)
       end
 
       # Wrap part of the template into inline layout.
