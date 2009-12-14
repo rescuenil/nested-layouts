@@ -1,22 +1,17 @@
+require 'rubygems'
 require 'rake'
-require 'rake/testtask'
-require 'rake/rdoctask'
 
-desc 'Default: run unit tests.'
-task :default => :test
-
-desc 'Test the nested_layouts plugin.'
-Rake::TestTask.new(:test) do |t|
-  t.libs << 'lib'
-  t.pattern = 'test/**/*_test.rb'
-  t.verbose = true
-end
-
-desc 'Generate documentation for the nested_layouts plugin.'
-Rake::RDocTask.new(:rdoc) do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'NestedLayouts'
-  rdoc.options << '--line-numbers --inline-source'
-  rdoc.rdoc_files.include('README')
-  rdoc.rdoc_files.include('lib/**/*.rb')
+begin
+  require 'jeweler'
+  Jeweler::Tasks.new do |gem|
+    gem.name = "nested_layouts"
+    gem.summary = "Plugin allows to specify outer layouts for particular layout thus creating nested layouts."
+    gem.email = "Sunteya@gmail.com"
+    gem.homepage = "http://github.com/sunteya/nested_layouts"
+    gem.authors = ["Sunteya"]
+    gem.add_dependency "actionpack", ">= 2.3"
+  end
+  Jeweler::RubyforgeTasks.new
+rescue LoadError
+  puts "Jeweler (or a dependency) not available. Install it with: sudo gem install jeweler"
 end

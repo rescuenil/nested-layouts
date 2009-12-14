@@ -1,2 +1,1 @@
-require 'nested_layouts'
-ActionView::Base.send :include, ActionView::Helpers::NestedLayoutsHelper
+require File.dirname(__FILE__) + "/rails/init.rb"
