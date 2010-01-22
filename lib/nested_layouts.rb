@@ -7,7 +7,19 @@ module ActionView #:nodoc:
       def inside_layout(layout, &block)
         layout_template = @template.view_paths.find_template(layout.to_s =~ /layouts\// ? layout : "layouts/#{layout}", :html)
         @template.instance_variable_set('@content_for_layout', capture(&block))
-        concat(@template.render(:file => @template.view_paths.find_template("layouts/#{layout}", :html), :user_full_path => true), binding)
+        
+        # Long method is long!
+        current_layout_path = @template.instance_variable_get(:@_current_render).
+        instance_variable_get(:@_memoized_relative_path)
+
+        next_layout = @template.view_paths.find_template("layouts/#{layout}", :html)
+        next_layout_path = @template.instance_variable_get(:@_current_render).
+        instance_variable_get(:@_memoized_relative_path)
+        
+        
+        raise NestedLayouts::RecursionError, "You cannot render the layout \"#{layout}\" inside itself! Doing so would break the space time continuum!" if next_layout_path == current_layout_path
+        
+        concat(@template.render(:file => next_layout, :user_full_path => true), binding)
       end
 
       # Wrap part of the template into inline layout.
@@ -18,6 +30,10 @@ module ActionView #:nodoc:
       end
     end
   end
+end
+
+module NestedLayouts
+  class RecursionError < Exception; end
 end
 
 ActionView::Base.send :include, ActionView::Helpers::NestedLayoutsHelper
