@@ -10,12 +10,12 @@ module ActionView #:nodoc:
         
         # Long method is long!
         current_layout_path = @template.instance_variable_get(:@_current_render).
-        instance_variable_get(:@_memoized_relative_path)
+        instance_variable_get(:@_memoized_relative_path).first
 
         next_layout = @template.view_paths.find_template("layouts/#{layout}", :html)
-        next_layout_path = @template.instance_variable_get(:@_current_render).
-        instance_variable_get(:@_memoized_relative_path)
         
+        # Is there a way to calculate this?
+        next_layout_path = Dir["app/views/layouts/#{layout}.*"].first
         
         raise NestedLayouts::RecursionError, "You cannot render the layout \"#{layout}\" inside itself! Doing so would break the space time continuum!" if next_layout_path == current_layout_path
         
