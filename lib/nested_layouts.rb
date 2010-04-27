@@ -19,7 +19,7 @@ module ActionView #:nodoc:
         
         raise NestedLayouts::RecursionError, "You cannot render the layout \"#{layout}\" inside itself! Doing so would break the space time continuum!" if next_layout_path == current_layout_path
         
-        concat(@template.render(:file => next_layout, :user_full_path => true), binding)
+        concat(@template.render(:file => next_layout, :user_full_path => true))
       end
 
       # Wrap part of the template into inline layout.
